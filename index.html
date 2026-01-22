@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>منيو مطعم الحفرة</title>
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --card: rgba(255,255,255,.06);
+      --text: #eaf0ff;
+      --muted: rgba(234,240,255,.68);
+      --stroke: rgba(255,255,255,.10);
+      --accent: #ff7a18;
+      --shadow: 0 14px 40px rgba(0,0,0,.45);
+      --radius: 18px;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family:"Tajawal", system-ui, -apple-system, Segoe UI, Arial;
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(255,122,24,.18), transparent 50%),
+        radial-gradient(900px 600px at 110% 20%, rgba(255,178,74,.14), transparent 45%),
+        linear-gradient(180deg, #070a0f, var(--bg));
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    .wrap{ max-width:1100px; margin:0 auto; padding:22px 16px 60px; }
+
+    .header{
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      padding:16px 16px;
+      border:1px solid var(--stroke);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position: sticky; top: 12px;
+      backdrop-filter: blur(12px);
+      z-index: 5;
+    }
+    .brand{ display:flex; align-items:center; gap:12px; }
+    .logo{
+      width:44px; height:44px; border-radius:14px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), transparent 55%),
+        linear-gradient(135deg, rgba(255,122,24,.95), rgba(255,178,74,.85));
+      box-shadow: 0 10px 28px rgba(255,122,24,.18);
+      display:grid; place-items:center;
+      border:1px solid rgba(255,255,255,.16);
+    }
+    .logo svg{ width:26px; height:26px; opacity:.95; }
+    .brand h1{ margin:0; font-size:18px; line-height:1.2; }
+    .brand p{ margin:3px 0 0; color:var(--muted); font-size:13px; }
+
+    .search{ flex:1; max-width:420px; position:relative; }
+    .search input{
+      width:100%;
+      padding:12px 14px 12px 42px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(0,0,0,.25);
+      color:var(--text);
+      outline:none;
+      transition: .2s;
+    }
+    .search input:focus{
+      border-color: rgba(255,122,24,.45);
+      box-shadow: 0 0 0 4px rgba(255,122,24,.12);
+    }
+    .search .icon{ position:absolute; left:12px; top:50%; transform:translateY(-50%); opacity:.7; }
+
+    .tabs{
+      display:flex; gap:10px; overflow:auto;
+      padding:14px 4px 2px; margin-top:14px;
+      scrollbar-width: none;
+    }
+    .tabs::-webkit-scrollbar{ display:none; }
+    .tab{
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.04);
+      color:var(--text);
+      padding:10px 14px;
+      border-radius: 999px;
+      cursor:pointer;
+      white-space:nowrap;
+      transition: .18s;
+      font-weight:800;
+      font-size:14px;
+    }
+    .tab:hover{ background: rgba(255,255,255,.08); }
+    .tab.active{
+      border-color: rgba(255,122,24,.55);
+      background: linear-gradient(135deg, rgba(255,122,24,.22), rgba(255,178,74,.14));
+      box-shadow: 0 10px 24px rgba(255,122,24,.10);
+    }
+
+    .section-title{
+      margin:16px 2px 6px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .section-title h2{ margin:0; font-size:16px; font-weight:900; color: rgba(255,255,255,.92); }
+    .count{ color: var(--muted); font-size:13px; }
+
+    .grid{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:14px;
+    }
+    .card{
+      grid-column: span 3;
+      border:1px solid var(--stroke);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius: var(--radius);
+      overflow:hidden;
+      cursor:pointer;
+      transition: transform .16s ease, background .16s ease, border-color .16s ease;
+      box-shadow: 0 12px 30px rgba(0,0,0,.25);
+      position:relative;
+    }
+    .card:hover{
+      transform: translateY(-3px);
+      border-color: rgba(255,122,24,.35);
+      background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.04));
+    }
+    .thumb{ height:150px; background:#111; position:relative; }
+    .thumb img{
+      width:100%; height:100%;
+      object-fit:cover; display:block;
+      filter: saturate(1.08) contrast(1.04);
+      transform: scale(1.02);
+    }
+    .thumb:after{
+      content:""; position:absolute; inset:0;
+      background: linear-gradient(180deg, transparent 30%, rgba(0,0,0,.65));
+    }
+    .badge{
+      position:absolute; top:10px; right:10px;
+      background: rgba(0,0,0,.45);
+      border:1px solid rgba(255,255,255,.14);
+      padding:6px 10px;
+      border-radius: 999px;
+      font-size:12px;
+      color:rgba(255,255,255,.92);
+      backdrop-filter: blur(8px);
+    }
+    .content{ padding:12px 12px 14px; }
+    .name{ margin:0; font-weight:900; font-size:15px; letter-spacing:.2px; }
+    .desc{
+      margin:8px 0 10px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.55;
+      min-height: 40px;
+    }
+    .row{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .price{
+      font-weight:900;
+      font-size:15px;
+      background: linear-gradient(135deg, rgba(255,122,24,.28), rgba(255,178,74,.16));
+      border:1px solid rgba(255,122,24,.35);
+      padding:7px 10px;
+      border-radius: 999px;
+    }
+    .more{
+      color: rgba(255,255,255,.86);
+      font-size:13px;
+      opacity:.85;
+      display:flex; align-items:center; gap:6px;
+    }
+    .more span{
+      display:inline-block; width:26px; height:26px;
+      border-radius: 10px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      display:grid; place-items:center;
+    }
+
+    @media (max-width: 980px){ .card{ grid-column: span 4; } }
+    @media (max-width: 720px){
+      .header{ flex-direction:column; align-items:stretch; }
+      .search{ max-width: 100%; }
+      .card{ grid-column: span 6; }
+    }
+    @media (max-width: 420px){ .card{ grid-column: span 12; } }
+
+    .empty{
+      grid-column: 1 / -1;
+      padding:22px;
+      border:1px dashed rgba(255,255,255,.18);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.03);
+      color: rgba(234,240,255,.72);
+      text-align:center;
+    }
+
+    /* Modal */
+    .modal-backdrop{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.6);
+      display:none;
+      align-items:center; justify-content:center;
+      padding:16px;
+      z-index:10;
+    }
+    .modal{
+      width:min(860px, 100%);
+      border-radius: 22px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(20,26,35,.95), rgba(12,16,22,.96));
+      box-shadow: 0 22px 70px rgba(0,0,0,.55);
+      position:relative;
+      transform: translateY(8px);
+      opacity:0;
+      transition: .18s ease;
+    }
+    .modal.show{ transform: translateY(0); opacity:1; }
+    .modal-top{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:0;
+    }
+    .modal-img{ min-height: 280px; background:#111; position:relative; }
+    .modal-img img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .modal-img:after{
+      content:""; position:absolute; inset:0;
+      background: radial-gradient(800px 420px at 20% 10%, rgba(255,122,24,.25), transparent 50%),
+                  linear-gradient(180deg, transparent 35%, rgba(0,0,0,.55));
+    }
+    .modal-body{
+      padding:18px 18px 16px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:14px;
+    }
+    .modal-title{ margin:0; font-size:20px; font-weight:900; }
+    .modal-desc{ margin:8px 0 0; color: rgba(234,240,255,.78); line-height:1.7; font-size:14px; }
+    .modal-meta{ display:flex; gap:10px; flex-wrap:wrap; }
+    .chip{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      padding:7px 10px;
+      border-radius: 999px;
+      font-size:12px;
+      color: rgba(255,255,255,.9);
+    }
+    .chip.accent{ border-color: rgba(255,122,24,.45); background: rgba(255,122,24,.16); }
+    .modal-actions{
+      display:flex; justify-content:space-between; align-items:center; gap:12px;
+      padding:16px 18px;
+      border-top:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.20);
+    }
+    .btn{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding:10px 12px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-weight:900;
+      transition:.16s;
+    }
+    .btn:hover{ background: rgba(255,255,255,.09); }
+    .btn.primary{
+      border-color: rgba(255,122,24,.55);
+      background: linear-gradient(135deg, rgba(255,122,24,.26), rgba(255,178,74,.16));
+    }
+    .close{
+      position:absolute; top:10px; left:10px;
+      width:40px; height:40px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.35);
+      color:#fff;
+      cursor:pointer;
+      display:grid; place-items:center;
+      backdrop-filter: blur(10px);
+    }
+    @media (max-width: 820px){
+      .modal-top{ grid-template-columns: 1fr; }
+      .modal-img{ min-height: 240px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <header class="header">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 2c2 3-1 4 1 7 1.2 1.8 4 .7 4 6 0 3.3-2.7 7-5 7s-5-3.7-5-7c0-4 2.2-4.8 3.2-6.3C11.2 7.1 10 6 12 2Z" fill="white" opacity=".95"/>
+          </svg>
+        </div>
+        <div>
+          <h1>مطعم الحفرة</h1>
+          <p>منيو إلكتروني — اضغط على أي وجبة لعرض التفاصيل</p>
+        </div>
+      </div>
+
+      <div class="search">
+        <span class="icon">🔎</span>
+        <input id="q" type="search" placeholder="ابحث عن وجبة… (مثال: شاورما)" autocomplete="off">
+      </div>
+    </header>
+
+    <div class="tabs" id="tabs"></div>
+
+    <div class="section-title">
+      <h2 id="sectionName">كل الأصناف</h2>
+      <div class="count" id="count"></div>
+    </div>
+
+    <section class="grid" id="grid"></section>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal" id="modal">
+      <button class="close" id="closeBtn" title="إغلاق">✕</button>
+
+      <div class="modal-top">
+        <div class="modal-img"><img id="mImg" alt=""></div>
+
+        <div class="modal-body">
+          <div>
+            <h3 class="modal-title" id="mTitle"></h3>
+            <p class="modal-desc" id="mDesc"></p>
+            <div class="modal-meta" id="mMeta"></div>
+          </div>
+
+          <div class="modal-meta">
+            <span class="chip accent" id="mPrice"></span>
+            <span class="chip" id="mCat"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn" id="copyBtn">نسخ اسم الوجبة</button>
+        <button class="btn primary" id="shareBtn">مشاركة</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ======================
+    // صور جميلة (روابط جاهزة) - تقدر تبدلها لاحقاً بصور المطعم
+    // ======================
+    const IMG = {
+      shawarma: [
+        "https://images.unsplash.com/photo-1625944525533-473f1a3b0b7e?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1604908176997-125f25cc5001?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1400&q=80"
+      ],
+      grill: [
+        "https://images.unsplash.com/photo-1604908554162-78a0b0b2ac06?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1606756790138-261d2b21cd75?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1611599537845-1c7aca0091c0?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=1400&q=80"
+      ],
+      sandwiches: [
+        "https://images.unsplash.com/photo-1550547660-420b0b9d3a0f?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1606755962773-d324e0a13086?auto=format&fit=crop&w=1400&q=80"
+      ],
+      salads: [
+        "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=1400&q=80"
+      ],
+      chicken: [
+        "https://images.unsplash.com/photo-1604908176997-125f25cc5001?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1606756790138-261d2b21cd75?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=1400&q=80"
+      ],
+      rice: [
+        "https://images.unsplash.com/photo-1604908176997-125f25cc5001?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600626333392-0781c0f7a1c8?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1541519227354-08fa5d50c44d?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=1400&q=80"
+      ]
+    };
+
+    // ======================
+    // مولّد سعر مؤقت حسب القسم
+    // ======================
+    function tempPrice(cat){
+      const ranges = {
+        "الشاورما": [18, 38],
+        "المشاوي": [28, 55],
+        "الساندوتشات": [16, 32],
+        "السلطات": [6, 16],
+        "الشرفي": [30, 60]
+      };
+      const [min,max] = ranges[cat] || [10,30];
+      const v = Math.floor(Math.random()*(max-min+1))+min;
+      return `${v} ₪`;
+    }
+
+    // صورة حسب القسم + تنويع
+    const pickIndex = (() => {
+      const m = {};
+      return (key) => {
+        m[key] = (m[key] ?? -1) + 1;
+        return m[key];
+      };
+    })();
+
+    function imgFor(cat){
+      const key =
+        cat === "الشاورما" ? "shawarma" :
+        cat === "المشاوي" ? "grill" :
+        cat === "الساندوتشات" ? "sandwiches" :
+        cat === "السلطات" ? "salads" :
+        cat === "الشرفي" ? "rice" : "sandwiches";
+
+      const arr = IMG[key];
+      const i = pickIndex(key) % arr.length;
+      return arr[i];
+    }
+
+    // وصف بسيط بدون تفاصيل زيادة
+    function shortDesc(cat){
+      if(cat==="الشاورما") return "وجبة شاورما بتتبيلة الحفرة.";
+      if(cat==="المشاوي") return "مشوي على الفحم — طعم قوي.";
+      if(cat==="الساندوتشات") return "ساندوتش سريع ولذيذ.";
+      if(cat==="السلطات") return "طبق جانبي خفيف.";
+      if(cat==="الشرفي") return "طبق رز + دجاج/لحم.";
+      return "تفاصيل الوجبة.";
+    }
+
+    // ======================
+    // 1) DATA (مطابق للصورة + أسعار مؤقتة + صور)
+    // ======================
+    const data = [];
+
+    function addItems(cat, names, tags){
+      names.forEach((name, idx)=>{
+        const id = `${cat}-${idx}`.replace(/\s+/g,"_");
+        data.push({
+          id,
+          cat,
+          name,
+          price: tempPrice(cat),
+          desc: shortDesc(cat),
+          tags: tags ? [tags] : [],
+          img: imgFor(cat),
+        });
+      });
+    }
+
+    // الساندوتشات
+    addItems("الساندوتشات", [
+      "تشكن بيتزا",
+      "تشكن بالكاري",
+      "تشكن بالجبنة",
+      "تشكن بالذرة",
+      "تشكن مكسيكانو",
+      "تشكن ستراجنوف",
+      "تشكن رول",
+      "تشكن صيني",
+      "تشكن بالصاج",
+      "تشكن برجر",
+      "بيف برجر",
+      "شنيسل",
+      "كبدة دجاج",
+      "كبدة اسكندراني",
+      "فطيرة ذهبية"
+    ], "⭐");
+
+    // الشرفي
+    addItems("الشرفي", [
+      "دجاج شواية",
+      "دجاج بالفرن",
+      "دجاج مندي",
+      "فخاد حبش",
+      "رز مشكل",
+      "رز قدر",
+      "رز مبهر",
+      "رز كبسة",
+      "رز أوزي"
+    ], "🔥");
+
+    // الشاورما
+    addItems("الشاورما", [
+      "شاورما دجاج",
+      "شاورما حبش",
+      "شاورما عجل",
+      "فرشوحة عادي",
+      "فرشوحة دبل لحمة",
+      "فرشوحة دبل خبز",
+      "شاورما سوري",
+      "شاورما اسكندر",
+      "صينية شاورما",
+      "كيلو شاورما"
+    ], "🔥 الأكثر طلباً");
+
+    // السلطات
+    addItems("السلطات", [
+      "ذرة بالمايونيز",
+      "تركي",
+      "متبل باذنجان",
+      "سلطة طحينة",
+      "حمص",
+      "بطاطا روسية",
+      "كول سلو",
+      "سلطة ملفوف أحمر",
+      "متومة",
+      "شيبس",
+      "مخللات بأنواعها"
+    ], "🥗");
+
+    // المشاوي
+    addItems("المشاوي", [
+      "كباب",
+      "كباب عجل",
+      "كباب حلبي",
+      "شيش طاووق",
+      "دجاج عالفحم",
+      "استيك دجاج عالفحم",
+      "جناح دجاج عالفحم",
+      "دبوس عالفحم",
+      "عرايس",
+      "وجبة عرسان",
+      "وجبة الحفرة"
+    ], "🔥 فحم");
+
+    // ======================
+    // 2) UI
+    // ======================
+    const tabsEl = document.getElementById("tabs");
+    const gridEl = document.getElementById("grid");
+    const qEl = document.getElementById("q");
+    const sectionNameEl = document.getElementById("sectionName");
+    const countEl = document.getElementById("count");
+
+    const backdrop = document.getElementById("backdrop");
+    const modal = document.getElementById("modal");
+    const closeBtn = document.getElementById("closeBtn");
+    const mImg = document.getElementById("mImg");
+    const mTitle = document.getElementById("mTitle");
+    const mDesc = document.getElementById("mDesc");
+    const mMeta = document.getElementById("mMeta");
+    const mPrice = document.getElementById("mPrice");
+    const mCat = document.getElementById("mCat");
+    const copyBtn = document.getElementById("copyBtn");
+    const shareBtn = document.getElementById("shareBtn");
+
+    const cats = ["كل الأصناف", ...Array.from(new Set(data.map(x => x.cat)))];
+    let activeCat = "كل الأصناف";
+    let query = "";
+
+    function escapeHtml(str=""){
+      return str.replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+    }
+
+    function renderTabs(){
+      tabsEl.innerHTML = cats.map(cat => `
+        <button class="tab ${cat===activeCat?'active':''}" data-cat="${escapeHtml(cat)}">
+          ${escapeHtml(cat)}
+        </button>
+      `).join("");
+
+      tabsEl.querySelectorAll(".tab").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          activeCat = btn.dataset.cat;
+          render();
+        });
+      });
+    }
+
+    function getFiltered(){
+      return data.filter(item=>{
+        const matchCat = activeCat === "كل الأصناف" ? true : item.cat === activeCat;
+        const matchQ = !query ? true : (item.name + " " + item.desc).toLowerCase().includes(query.toLowerCase());
+        return matchCat && matchQ;
+      });
+    }
+
+    function render(){
+      renderTabs();
+
+      const items = getFiltered();
+      sectionNameEl.textContent = activeCat;
+      countEl.textContent = `${items.length} صنف`;
+
+      if(items.length === 0){
+        gridEl.innerHTML = `<div class="empty">ما لقينا نتائج… جرّب كلمة ثانية أو غيّر القسم.</div>`;
+        return;
+      }
+
+      gridEl.innerHTML = items.map(item => `
+        <article class="card" data-id="${item.id}">
+          <div class="thumb">
+            <img src="${item.img}" alt="${escapeHtml(item.name)}" loading="lazy">
+            ${item.tags?.[0] ? `<div class="badge">${escapeHtml(item.tags[0])}</div>` : ""}
+          </div>
+          <div class="content">
+            <h3 class="name">${escapeHtml(item.name)}</h3>
+            <p class="desc">${escapeHtml(item.desc)}</p>
+            <div class="row">
+              <div class="price">${escapeHtml(item.price)}</div>
+              <div class="more"><span>⯈</span>تفاصيل</div>
+            </div>
+          </div>
+        </article>
+      `).join("");
+
+      gridEl.querySelectorAll(".card").forEach(card=>{
+        card.addEventListener("click", ()=>{
+          const id = card.dataset.id;
+          const item = data.find(x=>x.id===id);
+          if(item) openModal(item);
+        });
+      });
+    }
+
+    // ======================
+    // 3) MODAL
+    // ======================
+    let currentItem = null;
+
+    function openModal(item){
+      currentItem = item;
+      mImg.src = item.img;
+      mImg.alt = item.name;
+      mTitle.textContent = item.name;
+      mDesc.textContent = item.desc; // بدون تفاصيل زيادة
+      mPrice.textContent = `السعر (مؤقت): ${item.price}`;
+      mCat.textContent = `القسم: ${item.cat}`;
+      mMeta.innerHTML = (item.tags || []).map(t => `<span class="chip">${escapeHtml(t)}</span>`).join("");
+
+      backdrop.style.display = "flex";
+      backdrop.setAttribute("aria-hidden","false");
+      requestAnimationFrame(()=> modal.classList.add("show"));
+    }
+
+    function closeModal(){
+      modal.classList.remove("show");
+      setTimeout(()=>{
+        backdrop.style.display = "none";
+        backdrop.setAttribute("aria-hidden","true");
+      }, 150);
+      currentItem = null;
+    }
+
+    closeBtn.addEventListener("click", closeModal);
+    backdrop.addEventListener("click", (e)=>{ if(e.target === backdrop) closeModal(); });
+    document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeModal(); });
+
+    copyBtn.addEventListener("click", async ()=>{
+      if(!currentItem) return;
+      try{
+        await navigator.clipboard.writeText(currentItem.name);
+        copyBtn.textContent = "تم النسخ ✅";
+        setTimeout(()=> copyBtn.textContent = "نسخ اسم الوجبة", 900);
+      }catch{ alert("ما قدرنا ننسخ—انسخ يدويًا."); }
+    });
+
+    shareBtn.addEventListener("click", async ()=>{
+      if(!currentItem) return;
+      const text = `${currentItem.name} — ${currentItem.price} (مؤقت)`;
+      if(navigator.share){
+        try{ await navigator.share({ title:"مطعم الحفرة", text }); }catch{}
+      }else{
+        try{
+          await navigator.clipboard.writeText(text);
+          shareBtn.textContent = "تم النسخ للمشاركة ✅";
+          setTimeout(()=> shareBtn.textContent = "مشاركة", 900);
+        }catch{ alert(text); }
+      }
+    });
+
+    // ======================
+    // 4) SEARCH
+    // ======================
+    qEl.addEventListener("input", ()=>{ query = qEl.value.trim(); render(); });
+
+    // init
+    render();
+  </script>
+</body>
+</html>
